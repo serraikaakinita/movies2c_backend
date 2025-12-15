@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
-public class MovieController {
+public class
+MovieController {
     private final TmdbClient tmdbClient;
 
     public MovieController(TmdbClient tmdbClient) {
@@ -31,5 +32,9 @@ public class MovieController {
     @GetMapping("/api/search/movie")
     public String searchMovieByName(@RequestParam(required = true) String name){
         return  this.tmdbClient.searchMovieByName(name);
+    }
+    @GetMapping("/api/movie/cast")
+    public String getCastDetails(@RequestParam(required = true) String id) {
+        return this.tmdbClient.getCastDetails(id);
     }
 }
