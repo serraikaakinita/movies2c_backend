@@ -23,6 +23,11 @@ MovieController {
         return tmdbClient.getTrendingMovies();
     }
 
+
+    @GetMapping("/api/movies/genre")
+    public String getMoviesByGenre(@RequestParam String genreId) {
+        return tmdbClient.getMoviesByGenres(genreId);
+    }
     @GetMapping("/api/movie")
     public String getMovieDetails(@RequestParam(required = true) String id) {
         return this.tmdbClient.getMovieDetails(id);

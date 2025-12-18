@@ -29,6 +29,22 @@ public class TmdbClient {
         return response.getBody();
     }
 
+
+    public String getMoviesByGenres(String genreId){
+        String url = BASE_URL + "discover/movie?with_genres=" + genreId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url,HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
     public String getMovieDetails(String id){
         String url = BASE_URL + "/movie/"+id;
 
