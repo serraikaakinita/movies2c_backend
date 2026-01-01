@@ -21,7 +21,7 @@ public class UserToken {
     private String id;
     private String userId;
     private String token;
-    @Indexed(name = "expireAfterOneHour",expireAfterSeconds = 60)
+    @Indexed(name = "expireAfterThreeHours",expireAfterSeconds = 60*60*3)
     private Date created_at;
     //constractor
     public UserToken(String token,String userId) {
@@ -29,5 +29,4 @@ public class UserToken {
         this.userId =userId;
         this.created_at = new Date();
     }
-
 }

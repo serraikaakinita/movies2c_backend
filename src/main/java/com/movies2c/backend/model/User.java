@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.annotation.Documented;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "Users")
 @Getter
@@ -26,5 +28,6 @@ public class User {
     private String email;
     private String passwordHash;
     private long date;
-
+    private String bio;
+    private List<String> tags = new ArrayList<>();
 }
