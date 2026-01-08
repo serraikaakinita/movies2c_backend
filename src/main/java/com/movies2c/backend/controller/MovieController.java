@@ -42,4 +42,9 @@ MovieController {
     public String getCastDetails(@RequestParam(required = true) String id) {
         return this.tmdbClient.getCastDetails(id);
     }
+
+    @GetMapping("/api/movie/trailer")
+    public String getMovieTrailer(@RequestParam String id) {
+        return tmdbClient.getMovieTrailer(id);
+    }
 }
