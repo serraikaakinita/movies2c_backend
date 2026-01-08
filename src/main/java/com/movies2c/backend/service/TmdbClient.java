@@ -102,4 +102,21 @@ public class TmdbClient {
 
         return response.getBody();
     }
+
+    public String getMovieTrailer(String id) {
+        String url = BASE_URL + "movie/" + id + "/videos?language=en-US";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
+
 }
