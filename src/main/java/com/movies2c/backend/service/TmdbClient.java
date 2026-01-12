@@ -5,6 +5,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Service
 public class TmdbClient {
 
@@ -117,6 +120,71 @@ public class TmdbClient {
 
         return response.getBody();
     }
+
+    public String getTrendingTvSeries(){
+        String url = BASE_URL + "/trending/tv/week";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url,HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
+    public String getTvSeriesByGenres(String genreId) {
+        String url = BASE_URL + "discover/tv?with_genres=" + genreId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
+    public String getTvSeriesDetails(String id) {
+        String url = BASE_URL + "/tv/" + id;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
+    public String searchTvSeriesByName(String name) {
+
+        String url = BASE_URL + "search/tv?query="+name;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + readToken);
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(url,HttpMethod.GET, entity, String.class);
+
+        return response.getBody();
+    }
+
+
+
+
 
 
 }
