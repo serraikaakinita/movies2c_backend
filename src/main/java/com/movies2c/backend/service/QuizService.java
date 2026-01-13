@@ -26,7 +26,9 @@ public class QuizService {
     }
 
     public List<Quiz> getQuizzesByCategory(String category) {
-        return quizRepository.findByCategory(category);
+        // καθαρίζουμε τυχόν spaces
+        String cleanedCategory = category.trim();
+        return quizRepository.findByCategoryRegex(cleanedCategory);
     }
 
     public void deleteQuiz(String id) {
