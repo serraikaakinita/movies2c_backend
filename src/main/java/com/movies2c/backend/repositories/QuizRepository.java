@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface QuizRepository extends MongoRepository<Quiz, String> {
-    List<Quiz> findByCategoryIgnoreCase(String category);
+    List<Quiz> findByCategory(String category);
 }
-

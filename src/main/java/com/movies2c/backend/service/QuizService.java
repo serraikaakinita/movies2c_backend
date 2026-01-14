@@ -28,14 +28,9 @@ public class QuizService {
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
     }
 
-//    public List<Quiz> getQuizzesByCategory(String category) {
-//        return quizRepository.findByCategory(category);
-//    }
     public List<Quiz> getQuizzesByCategory(String category) {
-        String cleaned = category == null ? "" : category.trim().replaceAll("\\s+", " ");
-        return quizRepository.findByCategoryIgnoreCase(cleaned);
+        return quizRepository.findByCategory(category);
     }
-
 
     public void deleteQuiz(String id) {
         quizRepository.deleteById(id);
