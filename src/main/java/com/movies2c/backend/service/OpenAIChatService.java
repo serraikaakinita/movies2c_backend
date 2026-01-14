@@ -6,11 +6,14 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class OpenAIChatService {
 
-    private final OpenAIClient client = OpenAIOkHttpClient.fromEnv(); // διαβάζει OPENAI_API_KEY :contentReference[oaicite:3]{index=3}
+    private final OpenAIClient client = OpenAIOkHttpClient.fromEnv();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public String chat(String userMessage, ChatRequest.MovieContext movie) {
         String movieContext = "";
@@ -30,13 +33,52 @@ public class OpenAIChatService {
                         "User: " + userMessage;
 
         ResponseCreateParams params = ResponseCreateParams.builder()
-                .model("gpt-5.2")     // μπορείς να το αλλάξεις μετά
+                .model("gpt-5.2")
                 .input(prompt)
                 .build();
 
         Response response = client.responses().create(params);
-        return response.output().toString();
+        return extractText(response);
     }
 
-    private String safe(String s) { return s == null ? "" : s; }
+    private String extractText(Response response) {
+        if (response == null) return "";
+
+        try {
+            // Μετατρέπουμε το response σε JSON string
+            String json = mapper.writeValueAsString(response);
+            JsonNode root = mapper.readTree(json);
+
+            StringBuilder sb = new StringBuilder();
+
+            // Προσπαθούμε να βρούμε output[*].content[*].text (κλασική μορφή)
+            JsonNode output = root.path("output");
+            if (output.isArray()) {
+                for (JsonNode item : output) {
+                    JsonNode content = item.path("content");
+                    if (content.isArray()) {
+                        for (JsonNode c : content) {
+                            String text = c.path("text").asText("");
+                            if (!text.isBlank()) sb.append(text);
+                        }
+                    }
+                }
+            }
+
+            String result = sb.toString().trim();
+            if (!result.isBlank()) return result;
+
+            // Fallback: αν για κάποιο λόγο είναι αλλού, γύρνα όλο το response σαν string
+            return root.toString();
+
+        } catch (Exception e) {
+            // τελευταίο fallback
+            return response.toString();
+        }
+    }
+
+
+    private String safe(String s) {
+        return s == null ? "" : s;
+    }
 }
