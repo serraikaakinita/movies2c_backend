@@ -12,6 +12,9 @@ public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
+    public QuizService(QuizRepository quizRepository){
+        this.quizRepository=quizRepository;
+    }
     public Quiz createQuiz(Quiz quiz) {
         return quizRepository.save(quiz);
     }
@@ -25,9 +28,14 @@ public class QuizService {
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
     }
 
+//    public List<Quiz> getQuizzesByCategory(String category) {
+//        return quizRepository.findByCategory(category);
+//    }
     public List<Quiz> getQuizzesByCategory(String category) {
-        return quizRepository.findByCategory(category);
+        String cleaned = category == null ? "" : category.trim().replaceAll("\\s+", " ");
+        return quizRepository.findByCategoryIgnoreCase(cleaned);
     }
+
 
     public void deleteQuiz(String id) {
         quizRepository.deleteById(id);

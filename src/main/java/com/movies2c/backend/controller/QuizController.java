@@ -31,6 +31,8 @@ public class QuizController {
         return ResponseEntity.ok(quizzes);
     }
 
+
+
     // Quiz ανά ID
     @GetMapping("/{id}")
     public ResponseEntity<Quiz> getQuizById(@PathVariable String id) {
@@ -39,14 +41,20 @@ public class QuizController {
     }
 
     // Quiz ανά category (διορθωμένο)
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Quiz>> getQuizzesByCategory(@PathVariable String category) {
-        List<Quiz> quizzes = quizService.getQuizzesByCategory(category);
-        if (quizzes.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(quizzes);
-        }
-        return ResponseEntity.ok(quizzes);
-    }
+//    @GetMapping("/category")
+//    public ResponseEntity<List<Quiz>> getQuizzesByCategory(@RequestParam String category) {
+//        List<Quiz> quizzes = quizService.getQuizzesByCategory(category);
+////        if (quizzes.isEmpty()) {
+////            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(quizzes);
+////        }
+//        return ResponseEntity.ok(quizzes);
+//    }
+@GetMapping("/category")
+public ResponseEntity<List<Quiz>> getQuizzesByCategory(@RequestParam String category) {
+    List<Quiz> quizzes = quizService.getQuizzesByCategory(category);
+    return ResponseEntity.ok(quizzes);
+}
+
 
     // Διαγραφή quiz
     @DeleteMapping("/{id}")
