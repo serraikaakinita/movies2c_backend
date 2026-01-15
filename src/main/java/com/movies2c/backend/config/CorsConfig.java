@@ -16,11 +16,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // ⚠️ allowCredentials = true => ΔΕΝ χρησιμοποιούμε "*"
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "https://movies2c.netlify.app" // βάλε το domain σου
-        ));
+        config.setAllowedOrigins(List.of("*"));
 
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
